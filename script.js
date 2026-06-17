@@ -1,4 +1,5 @@
 const roles = ["Tanque", "Daño", "Daño", "Apoyo", "Apoyo"];
+const emojis = ["🐸", "🦆", "🐙", "🦖", "🐧", "🦝", "🦄", "🐢", "🦊", "🐼", "🦉", "🦈", "🦔", "🐲", "🍕", "🌮", "🚀", "👾", "🤖", "🧃"];
 
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -39,7 +40,8 @@ function renderTeam(title, players, assignRoles) {
       ? ` - ${shuffledRoles[index]}`
       : "";
 
-    return `<li>${player}${role}</li>`;
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    return `<li><span class="emoji">${emoji}</span> ${player}${role}</li>`;
   }).join("");
 
   return `
