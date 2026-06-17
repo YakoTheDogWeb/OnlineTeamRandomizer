@@ -57,9 +57,9 @@ button {
 }
 
 .team {
-  background: #222;
-  padding: 18px;
-  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .team h2 {
@@ -99,10 +99,25 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  inset: 0;
-  z-index: -1;
+  width: 250%;
+  height: 250%;
+  top: -75%;
+  left: -75%;
+  z-index: -3;
 
-  backdrop-filter: blur(80px);
+  background:
+    conic-gradient(
+      from 0deg,
+      #001d3d,
+      #003566,
+      #0077b6,
+      #00b4d8,
+      #001d3d
+    );
+
+  animation: oceanWave 40s linear infinite;
+  opacity: 0.4;
+  filter: blur(150px);
 }
 
 @keyframes drift {
@@ -116,5 +131,15 @@ body::after {
 
   100% {
     transform: translate(-2%, 8%) rotate(-5deg);
+  }
+}
+
+@keyframes oceanWave {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
