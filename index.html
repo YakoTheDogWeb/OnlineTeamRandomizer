@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Randomizador Overwatch</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>Randomizador de equipos - Overwatch</h1>
+
+    <textarea id="players" placeholder="Un jugador por línea"></textarea>
+
+    <label>
+      <input type="checkbox" id="assignRoles">
+      Asignar roles
+    </label>
+
+    <button onclick="generateTeams()">Crear equipos</button>
+
+    <section id="result"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
