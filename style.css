@@ -5,9 +5,11 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #121212;
   color: white;
-  padding: 20px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  background: #0b1020;
 }
 
 main {
@@ -77,5 +79,42 @@ button {
   button {
     width: auto;
     min-width: 220px;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: -2;
+
+  background:
+    radial-gradient(circle at 20% 20%, #00c6ff 0%, transparent 30%),
+    radial-gradient(circle at 80% 30%, #7b61ff 0%, transparent 35%),
+    radial-gradient(circle at 50% 80%, #00ffd5 0%, transparent 30%);
+
+  animation: drift 25s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  backdrop-filter: blur(80px);
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(-5%, -5%) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(5%, 3%) rotate(8deg);
+  }
+
+  100% {
+    transform: translate(-2%, 8%) rotate(-5deg);
   }
 }
