@@ -71,6 +71,12 @@ button {
   font-size: 1.05rem;
 }
 
+.emoji {
+  display: inline-block;
+  width: 1.6em;
+  text-align: center;
+}
+
 @media (min-width: 700px) {
   #result {
     grid-template-columns: 1fr 1fr;
