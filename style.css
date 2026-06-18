@@ -14,8 +14,7 @@ body {
 }
 
 main {
-  width: 100%;
-  max-width: 800px;
+  width: min(800px, calc(100vw - 32px));
   margin: 0 auto;
 }
 
@@ -42,32 +41,48 @@ label {
 
 .button-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 20px;
 }
 
 .button-row button {
   flex: 1;
-  margin-top: 0;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 52px;
+}
+
+.button-row button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.button-row button:active {
+  transform: translateY(0);
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+.copy-btn {
+  background: linear-gradient(135deg, #7b61ff, #5a3fff);
+}
+
+.whatsapp-btn {
+  background: linear-gradient(135deg, #25d366, #128c7e);
 }
 
 @media (max-width: 600px) {
   .button-row {
     flex-direction: column;
   }
-
-button {
-  width: 100%;
-  margin-top: 20px;
-  padding: 16px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-
 }
 
 #result {
@@ -79,6 +94,9 @@ button {
 .team {
   padding: 20px;
   border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .team h2 {
@@ -99,11 +117,6 @@ button {
 @media (min-width: 700px) {
   #result {
     grid-template-columns: 1fr 1fr;
-  }
-
-  button {
-    width: auto;
-    min-width: 220px;
   }
 }
 
