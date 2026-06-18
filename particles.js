@@ -2,7 +2,7 @@ const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
 
 const img = new Image();
-img.src = "yako.jpg";
+img.src = "yako.jpeg";
 
 const particles = [];
 const maxParticles = 10;
