@@ -7,9 +7,6 @@ img.src = "yako.jpeg";
 const particles = [];
 const maxParticles = 10;
 
-let celebrationUntil = 0;
-let normalSpeed = 1;
-
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -18,27 +15,15 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-function createParticle(isCelebration = false) {
-  const size = isCelebration
-    ? Math.random() * 25 + 20
-    : Math.random() * 50 + 30;
-
-  const speed = isCelebration ? 5 : 1.5;
-
-  opacity: 1,
-  exploding: false,
-  growth: isCelebration ? Math.random() * 2 + 2 : 0
+function createParticle() {
+  const size = Math.random() * 50 + 30;
 
   return {
     x: Math.random() * (canvas.width - size),
     y: Math.random() * (canvas.height - size),
     size: size,
-    dx: (Math.random() - 0.5) * speed,
-    dy: (Math.random() - 0.5) * speed,
-    celebration: isCelebration,
-    opacity: 1,
-    exploding: false,
-    growth: isCelebration ? Math.random() * 2 + 2 : 0
+    dx: (Math.random() - 0.5) * 1.5,
+    dy: (Math.random() - 0.5) * 1.5
   };
 }
 
@@ -50,8 +35,6 @@ function addParticles() {
 
 function drawCircularImage(particle) {
   ctx.save();
-
-  ctx.globalAlpha = particle.opacity;
 
   ctx.beginPath();
   ctx.arc(
@@ -73,6 +56,19 @@ function drawCircularImage(particle) {
   );
 
   ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(
+    particle.x + particle.size / 2,
+    particle.y + particle.size / 2,
+    particle.size / 2,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.strokeStyle = "rgba(255,255,255,0.4)";
+  ctx.lineWidth = 2;
+  ctx.stroke();
 }
 
 function animateParticles() {
@@ -93,24 +89,6 @@ function animateParticles() {
     drawCircularImage(particle);
   });
 
-  if (Date.now() > celebrationUntil) {
-    for (let i = particles.length - 1; i >= 0; i--) {
-      if (particles[i].celebration) {
-        particles[i].exploding = true;
-        particles[i].size += particles[i].growth;
-        particles[i].opacity -= 0.04;
-  
-        if (particles[i].opacity <= 0) {
-          particles.splice(i, 1);
-        }
-      }
-    }
-  
-    while (particles.filter(p => !p.celebration).length < maxParticles) {
-      particles.push(createParticle(false));
-    }
-  }
-
   requestAnimationFrame(animateParticles);
 }
 
@@ -118,11 +96,3 @@ img.onload = () => {
   addParticles();
   animateParticles();
 };
-
-function launchCelebration() {
-  celebrationUntil = Date.now() + 2000;
-
-  for (let i = 0; i < 35; i++) {
-    particles.push(createParticle(true));
-  }
-}
