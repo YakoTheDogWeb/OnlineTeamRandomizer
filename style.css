@@ -39,6 +39,13 @@ label {
   font-size: 1rem;
 }
 
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
 .button-row {
   display: flex;
   gap: 12px;
