@@ -36,6 +36,11 @@ function generateTeams() {
   `;
 
   lastTeamsText = createTeamsText(team1, team2);
+
+  if (typeof launchCelebration === "function") {
+    launchCelebration();
+  }
+  
 }
 
 function buildTeam(players, assignRoles) {
