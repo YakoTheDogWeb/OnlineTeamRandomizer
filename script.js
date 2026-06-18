@@ -1,6 +1,8 @@
-let lastTeamsText = "";
 const roles = ["Tanque", "Daño", "Daño", "Apoyo", "Apoyo"];
-const emojis = ["🐸", "🦆", "🐙", "🦖", "🐧", "🦝", "🦄", "🐢", "🦊", "🐼", "💩", "🦉", "🦈", "🦔", "🐲", "🍕", "🌮", "🚀", "👾", "🤖", "🧃"];
+
+const emojis = ["🐸", "🦆", "🐙", "🦖", "🐧", "🦝", "🦄", "🐢", "🦊", "🐼", "🦉", "🦈", "🦔", "🐲", "🍕", "🌮", "🚀", "👾", "🤖", "🧃"];
+
+let lastTeamsText = "";
 
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -18,32 +20,45 @@ function generateTeams() {
 
   if (players.length < 2) {
     result.innerHTML = "<p>Introduce al menos 2 jugadores.</p>";
+    lastTeamsText = "";
     return;
   }
 
   players = shuffle(players);
 
   const middle = Math.ceil(players.length / 2);
-  const team1 = players.slice(0, middle);
-  const team2 = players.slice(middle);
-  lastTeamsText = createTeamsText(team1, team2, assignRoles);
+  const team1 = buildTeam(players.slice(0, middle), assignRoles);
+  const team2 = buildTeam(players.slice(middle), assignRoles);
 
   result.innerHTML = `
-    ${renderTeam("Equipo 1", team1, assignRoles)}
-    ${renderTeam("Equipo 2", team2, assignRoles)}
+    ${renderTeam("Equipo 1", team1)}
+    ${renderTeam("Equipo 2", team2)}
   `;
+
+  lastTeamsText = createTeamsText(team1, team2);
 }
 
-function renderTeam(title, players, assignRoles) {
+function buildTeam(players, assignRoles) {
   let shuffledRoles = shuffle([...roles]);
 
-  const list = players.map((player, index) => {
+  return players.map((player, index) => {
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
     const role = assignRoles && index < shuffledRoles.length
-      ? ` - ${shuffledRoles[index]}`
+      ? shuffledRoles[index]
       : "";
 
-    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-    return `<li><span class="emoji">${emoji}</span> ${player}${role}</li>`;
+    return {
+      name: player,
+      emoji: emoji,
+      role: role
+    };
+  });
+}
+
+function renderTeam(title, team) {
+  const list = team.map(player => {
+    const roleText = player.role ? ` - ${player.role}` : "";
+    return `<li><span class="emoji">${player.emoji}</span> ${player.name}${roleText}</li>`;
   }).join("");
 
   return `
@@ -54,16 +69,11 @@ function renderTeam(title, players, assignRoles) {
   `;
 }
 
-function createTeamsText(team1, team2, assignRoles) {
-  const formatTeam = (title, players) => {
-    let shuffledRoles = shuffle([...roles]);
-
-    const lines = players.map((player, index) => {
-      const role = assignRoles && index < shuffledRoles.length
-        ? ` - ${shuffledRoles[index]}`
-        : "";
-
-      return `${player}${role}`;
+function createTeamsText(team1, team2) {
+  const formatTeam = (title, team) => {
+    const lines = team.map(player => {
+      const roleText = player.role ? ` - ${player.role}` : "";
+      return `${player.emoji} ${player.name}${roleText}`;
     });
 
     return `${title}\n${lines.join("\n")}`;
@@ -72,15 +82,25 @@ function createTeamsText(team1, team2, assignRoles) {
   return `${formatTeam("Equipo 1", team1)}\n\n${formatTeam("Equipo 2", team2)}`;
 }
 
-function copyTeams() {
+async function copyTeams() {
   if (!lastTeamsText) {
     alert("Primero crea los equipos.");
     return;
   }
 
-  navigator.clipboard.writeText(lastTeamsText)
-    .then(() => alert("Equipos copiados al portapapeles."))
-    .catch(() => alert("No se ha podido copiar el texto."));
+  try {
+    await navigator.clipboard.writeText(lastTeamsText);
+    alert("Equipos copiados al portapapeles.");
+  } catch (error) {
+    const textArea = document.createElement("textarea");
+    textArea.value = lastTeamsText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+
+    alert("Equipos copiados al portapapeles.");
+  }
 }
 
 function shareWhatsApp() {
@@ -90,6 +110,5 @@ function shareWhatsApp() {
   }
 
   const text = encodeURIComponent(lastTeamsText);
-  window.open(`https://wa.me/?text=${text}`, "_blank");
+  window.location.href = `https://wa.me/?text=${text}`;
 }
-
