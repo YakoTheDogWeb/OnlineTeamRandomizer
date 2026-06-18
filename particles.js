@@ -25,13 +25,20 @@ function createParticle(isCelebration = false) {
 
   const speed = isCelebration ? 5 : 1.5;
 
+  opacity: 1,
+  exploding: false,
+  growth: isCelebration ? Math.random() * 2 + 2 : 0
+
   return {
     x: Math.random() * (canvas.width - size),
     y: Math.random() * (canvas.height - size),
     size: size,
     dx: (Math.random() - 0.5) * speed,
     dy: (Math.random() - 0.5) * speed,
-    celebration: isCelebration
+    celebration: isCelebration,
+    opacity: 1,
+    exploding: false,
+    growth: isCelebration ? Math.random() * 2 + 2 : 0
   };
 }
 
@@ -43,6 +50,8 @@ function addParticles() {
 
 function drawCircularImage(particle) {
   ctx.save();
+
+  ctx.globalAlpha = particle.opacity;
 
   ctx.beginPath();
   ctx.arc(
@@ -87,11 +96,17 @@ function animateParticles() {
   if (Date.now() > celebrationUntil) {
     for (let i = particles.length - 1; i >= 0; i--) {
       if (particles[i].celebration) {
-        particles.splice(i, 1);
+        particles[i].exploding = true;
+        particles[i].size += particles[i].growth;
+        particles[i].opacity -= 0.04;
+  
+        if (particles[i].opacity <= 0) {
+          particles.splice(i, 1);
+        }
       }
     }
   
-    while (particles.length < maxParticles) {
+    while (particles.filter(p => !p.celebration).length < maxParticles) {
       particles.push(createParticle(false));
     }
   }
