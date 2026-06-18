@@ -1,6 +1,6 @@
 const roles = ["Tanque", "Daño", "Daño", "Apoyo", "Apoyo"];
 
-const emojis = ["🐸", "🦆", "🐙", "🦖", "🐧", "🦝", "🦄", "🐢", "🦊", "🐼", "🦉", "💩", "🦈", "🦔", "🐲", "🍕", "🌮", "🚀", "👾", "🤖", "🧃"];
+const emojis = ["🐸", "🦆", "🐙", "🦖", "🐧", "🦝", "🦄", "🐢", "🦊", "🐼", "🦉", "🦈", "🦔", "🐲", "🍕", "🌮", "🚀", "👾", "🤖", "🧃"];
 
 let lastTeamsText = "";
 
@@ -36,11 +36,6 @@ function generateTeams() {
   `;
 
   lastTeamsText = createTeamsText(team1, team2);
-
-  if (typeof launchCelebration === "function") {
-    launchCelebration();
-  }
-  
 }
 
 function buildTeam(players, assignRoles) {
